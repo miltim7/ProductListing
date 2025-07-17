@@ -688,8 +688,9 @@ input:checked+.slider:before {
     align-items: center;
     justify-content: flex-end;
     gap: 7px;
-    width: 100px;
+    width: 120px;
     flex-shrink: 0;
+    white-space: nowrap;
 }
 
 .status-icon {
@@ -749,7 +750,7 @@ input:checked+.slider:before {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     width: 264px;
     height: 252px;
-    z-index: 1000;
+    z-index: 10000;
     display: none;
     margin-top: 4px;
     overflow: hidden;
@@ -813,7 +814,7 @@ input:checked+.slider:before {
     line-height: 1.4;
     font-weight: 400;
     width: 280px;
-    z-index: 1000;
+    z-index: 5000;
     display: none;
     margin-bottom: 10px;
     font-family: "Onest", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
@@ -1066,8 +1067,8 @@ input:checked+.slider:before {
     }
 
     .status-icon {
-        width: 13px;
-        height: 11px;
+        width: 16px;
+        height: 16px;
     }
 
     .filter-item {
@@ -1130,8 +1131,8 @@ input:checked+.slider:before {
     }
 
     .status-icon {
-        width: 12px;
-        height: 10px;
+        width: 14px;
+        height: 14px;
     }
 
     .filter-item {
@@ -1269,8 +1270,8 @@ input:checked+.slider:before {
     }
 
     .status-icon {
-        width: 10px;
-        height: 8px;
+        width: 14px;
+        height: 14px;
     }
 
     .filter-item {
@@ -1878,6 +1879,16 @@ input:checked+.slider:before {
     justify-content: center;
 }
 
+
+
+
+
+
+
+
+
+
+
 .checkbox-option {
     display: flex;
     align-items: center;
@@ -1888,7 +1899,8 @@ input:checked+.slider:before {
     font-family: "Onest", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
-.checkbox-option input[type="checkbox"] {
+.checkbox-option input[type="checkbox"],
+.checkbox-option input[type="radio"] {
     display: none;
 }
 
@@ -1896,18 +1908,27 @@ input:checked+.slider:before {
     width: 18px;
     height: 18px;
     border: 2px solid #EDEDFA;
-    border-radius: 4px;
     position: relative;
     flex-shrink: 0;
     background: #EDEDFA;
+    transition: all 0.2s ease;
 }
 
-.checkbox-option input[type="checkbox"]:checked+.checkbox-custom {
+.checkbox-option input[type="checkbox"] + .checkbox-custom {
+    border-radius: 4px;
+}
+
+.checkbox-option input[type="radio"] + .checkbox-custom {
+    border-radius: 50%;
+}
+
+.checkbox-option input[type="checkbox"]:checked + .checkbox-custom,
+.checkbox-option input[type="radio"]:checked + .checkbox-custom {
     border-color: #5856D2;
     background: #5856D2;
 }
 
-.checkbox-option input[type="checkbox"]:checked+.checkbox-custom::after {
+.checkbox-option input[type="checkbox"]:checked + .checkbox-custom::after {
     content: '✓';
     position: absolute;
     top: 50%;
@@ -1917,6 +1938,26 @@ input:checked+.slider:before {
     font-size: 10px;
     font-weight: bold;
 }
+
+.checkbox-option input[type="radio"]:checked + .checkbox-custom::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 6px;
+    height: 6px;
+    background: white;
+    border-radius: 50%;
+}
+
+
+
+
+
+
+
+
 
 .coins-badge {
     font-size: 16px;
@@ -2522,4 +2563,43 @@ input:checked+.slider:before {
 
 .dropdown-item:disabled:hover {
     background: transparent;
+}
+
+.product-item {
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+    z-index: 1;
+}
+
+.product-item.dropdown-open {
+    z-index: 10001;
+}
+
+.product-actions {
+    position: relative;
+    width: 32px;
+    flex-shrink: 0;
+    z-index: 1;
+}
+
+.product-actions.dropdown-open {
+    z-index: 10002;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border: 1px solid #ECECEC;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 264px;
+    height: 252px;
+    z-index: 10003;
+    display: none;
+    margin-top: 4px;
+    overflow: hidden;
+    padding: 0 20px;
 }

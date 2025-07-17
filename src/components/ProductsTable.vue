@@ -74,12 +74,15 @@
         v-for="(product, index) in products"
         :key="product.id + '_' + index"
         class="product-item"
-        :class="{ 
-          'dragging': draggedIndex === index,
-          'drag-over-top': dragOverIndex === index && draggedIndex !== index && draggedIndex > index,
-          'drag-over-bottom': dragOverIndex === index && draggedIndex !== index && draggedIndex < index,
+        :class="{
+          dragging: draggedIndex === index,
+          'dropdown-open': dropdownIndex === index,
+          'drag-over-top':
+            dragOverIndex === index && draggedIndex !== index && draggedIndex > index,
+          'drag-over-bottom':
+            dragOverIndex === index && draggedIndex !== index && draggedIndex < index,
           'shifted-up': shouldShiftUp(index),
-          'shifted-down': shouldShiftDown(index)
+          'shifted-down': shouldShiftDown(index),
         }"
         draggable="true"
         @dragstart="handleDragStart(index, $event)"
@@ -111,35 +114,58 @@
           Promo
         </button>
 
-        <div class="product-status" 
-             @mouseenter="showStatusTooltipHandler(index)"
-             @mouseleave="hideStatusTooltip"
-             @click="toggleStatusTooltip(index)">
-          <img 
-            :src="product.canPromote ? '/images/refresh-icon.png' : '/images/refresh-icon-red.png'" 
-            alt="refresh" 
+        <div
+          class="product-status"
+          @mouseenter="showStatusTooltipHandler(index)"
+          @mouseleave="hideStatusTooltip"
+          @click="toggleStatusTooltip(index)"
+        >
+          <img
+            :src="
+              product.canPromote
+                ? '/images/refresh-icon.png'
+                : '/images/refresh-icon-red.png'
+            "
+            alt="refresh"
             class="status-icon"
             :class="{ 'status-icon-clickable': product.canPromote }"
             @click.stop="promoteToTop(index)"
           />
-          <span class="status-text" :class="{ 'status-text--error': !product.canPromote }">
+          <span
+            class="status-text"
+            :class="{ 'status-text--error': !product.canPromote }"
+          >
             {{ formatTime(product.timeLeft) }}
           </span>
-          
-          <div class="status-tooltip" :class="{ show: showStatusTooltip && statusTooltipIndex === index }">
+
+          <div
+            class="status-tooltip"
+            :class="{ show: showStatusTooltip && statusTooltipIndex === index }"
+          >
             <div class="tooltip-content">
-              {{ product.canPromote ? 'Нажмите на иконку, чтобы поднять товар в топ каталога. Следующее обновление будет доступно через 15 дней.' : 'Товар недавно был поднят в топ. Следующее обновление будет доступно через указанное время.' }}
+              {{
+                product.canPromote
+                  ? "Нажмите на иконку, чтобы поднять товар в топ каталога. Следующее обновление будет доступно через 15 дней."
+                  : "Товар недавно был поднят в топ. Следующее обновление будет доступно через указанное время."
+              }}
             </div>
           </div>
         </div>
 
-        <div class="product-actions">
+        <div
+          class="product-actions"
+          :class="{ 'dropdown-open': dropdownIndex === index }"
+        >
           <button class="actions-btn" @click="toggleDropdown(index)">
             <span class="icon-dots"></span>
           </button>
 
           <div class="dropdown-menu" :class="{ show: dropdownIndex === index }">
-            <button class="dropdown-item" @click="promoteToTop(index)" :disabled="!product.canPromote">
+            <button
+              class="dropdown-item"
+              @click="promoteToTop(index)"
+              :disabled="!product.canPromote"
+            >
               <img src="/images/pen-icon.png" alt="edit" class="dropdown-icon-img" />
               Обновить
             </button>
@@ -152,7 +178,11 @@
               Изменить цену
             </button>
             <button class="dropdown-item">
-              <img src="/images/certificate-icon.png" alt="certificate" class="dropdown-icon-img" />
+              <img
+                src="/images/certificate-icon.png"
+                alt="certificate"
+                class="dropdown-icon-img"
+              />
               Депозитный сертификат
             </button>
             <button class="dropdown-item">
@@ -182,17 +212,32 @@
             <div class="option-title">Показывать на главной странице в блоке Promo:</div>
             <div class="option-row">
               <label class="checkbox-option">
-                <input type="checkbox" v-model="promoData.mainPageNo" />
+                <input
+                  type="radio"
+                  name="mainPage"
+                  value="no"
+                  v-model="promoData.mainPage"
+                />
                 <span class="checkbox-custom"></span>
                 Нет
               </label>
               <label class="checkbox-option">
-                <input type="checkbox" v-model="promoData.mainPageCoins" checked />
+                <input
+                  type="radio"
+                  name="mainPage"
+                  value="coins"
+                  v-model="promoData.mainPage"
+                />
                 <span class="checkbox-custom"></span>
                 <span class="coins-badge">2 ArtCoins</span>
               </label>
               <label class="checkbox-option">
-                <input type="checkbox" v-model="promoData.mainPagePoints" />
+                <input
+                  type="radio"
+                  name="mainPage"
+                  value="points"
+                  v-model="promoData.mainPage"
+                />
                 <span class="checkbox-custom"></span>
                 1200 баллов
               </label>
@@ -203,17 +248,32 @@
             <div class="option-title">Показывать работы в Vip-блоке:</div>
             <div class="option-row">
               <label class="checkbox-option">
-                <input type="checkbox" v-model="promoData.vipBlockNo" />
+                <input
+                  type="radio"
+                  name="vipBlock"
+                  value="no"
+                  v-model="promoData.vipBlock"
+                />
                 <span class="checkbox-custom"></span>
                 Нет
               </label>
               <label class="checkbox-option">
-                <input type="checkbox" v-model="promoData.vipBlockCoins" checked />
+                <input
+                  type="radio"
+                  name="vipBlock"
+                  value="coins"
+                  v-model="promoData.vipBlock"
+                />
                 <span class="checkbox-custom"></span>
                 <span class="coins-badge">4 ArtCoins</span>
               </label>
               <label class="checkbox-option">
-                <input type="checkbox" v-model="promoData.vipBlockPoints" />
+                <input
+                  type="radio"
+                  name="vipBlock"
+                  value="points"
+                  v-model="promoData.vipBlock"
+                />
                 <span class="checkbox-custom"></span>
                 2400 баллов
               </label>
@@ -224,17 +284,32 @@
             <div class="option-title">Пост в социальных сетях:</div>
             <div class="option-row">
               <label class="checkbox-option">
-                <input type="checkbox" v-model="promoData.socialPostNo" />
+                <input
+                  type="radio"
+                  name="socialPost"
+                  value="no"
+                  v-model="promoData.socialPost"
+                />
                 <span class="checkbox-custom"></span>
                 Нет
               </label>
               <label class="checkbox-option">
-                <input type="checkbox" v-model="promoData.socialPostCoins" checked />
+                <input
+                  type="radio"
+                  name="socialPost"
+                  value="coins"
+                  v-model="promoData.socialPost"
+                />
                 <span class="checkbox-custom"></span>
                 <span class="coins-badge">8 ArtCoins</span>
               </label>
               <label class="checkbox-option">
-                <input type="checkbox" v-model="promoData.socialPostPoints" />
+                <input
+                  type="radio"
+                  name="socialPost"
+                  value="points"
+                  v-model="promoData.socialPost"
+                />
                 <span class="checkbox-custom"></span>
                 4800 баллов
               </label>
@@ -245,7 +320,12 @@
             <div class="option-title">Показывать на главной странице в блоке Promo:</div>
             <div class="option-row single">
               <label class="checkbox-option">
-                <input type="checkbox" v-model="promoData.freePromo" checked />
+                <input
+                  type="radio"
+                  name="freePromo"
+                  value="free"
+                  v-model="promoData.freePromo"
+                />
                 <span class="checkbox-custom"></span>
                 Бесплатно
               </label>
@@ -275,17 +355,11 @@ export default {
       dragOverIndex: -1,
       timerInterval: null,
       promoData: {
-        mainPageNo: false,
-        mainPageCoins: true,
-        mainPagePoints: false,
-        vipBlockNo: false,
-        vipBlockCoins: true,
-        vipBlockPoints: false,
-        socialPostNo: false,
-        socialPostCoins: true,
-        socialPostPoints: false,
-        freePromo: true,
-      },
+  mainPage: 'coins',
+  vipBlock: 'coins',
+  socialPost: 'coins',
+  freePromo: 'free',
+},
       products: [
         {
           id: "84634463",
@@ -293,7 +367,8 @@ export default {
           price: "6 650,000 ₽",
           timeLeft: 3600,
           canPromote: true,
-          image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=60&h=60&fit=crop&crop=center",
+          image:
+            "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=60&h=60&fit=crop&crop=center",
         },
         {
           id: "84634464",
@@ -301,7 +376,8 @@ export default {
           price: "60,000 ₽",
           timeLeft: 1296000,
           canPromote: false,
-          image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=60&h=60&fit=crop&crop=center",
+          image:
+            "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=60&h=60&fit=crop&crop=center",
         },
         {
           id: "84634465",
@@ -309,7 +385,8 @@ export default {
           price: "700,000 ₽",
           timeLeft: 7200,
           canPromote: true,
-          image: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=60&h=60&fit=crop&crop=center",
+          image:
+            "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=60&h=60&fit=crop&crop=center",
         },
         {
           id: "84634466",
@@ -317,7 +394,8 @@ export default {
           price: "600,000 ₽",
           timeLeft: 900,
           canPromote: true,
-          image: "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=60&h=60&fit=crop&crop=center",
+          image:
+            "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=60&h=60&fit=crop&crop=center",
         },
         {
           id: "84634467",
@@ -325,7 +403,8 @@ export default {
           price: "61,000 ₽",
           timeLeft: 864000,
           canPromote: false,
-          image: "https://images.unsplash.com/photo-1558618666-fbd697c83667?w=60&h=60&fit=crop&crop=center",
+          image:
+            "https://images.unsplash.com/photo-1558618666-fbd697c83667?w=60&h=60&fit=crop&crop=center",
         },
         {
           id: "84634468",
@@ -333,7 +412,8 @@ export default {
           price: "8,000 ₽",
           timeLeft: 1800,
           canPromote: true,
-          image: "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=60&h=60&fit=crop&crop=center",
+          image:
+            "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=60&h=60&fit=crop&crop=center",
         },
         {
           id: "84634469",
@@ -341,7 +421,8 @@ export default {
           price: "70,000 ₽",
           timeLeft: 432000,
           canPromote: false,
-          image: "https://images.unsplash.com/photo-1493663284031-b7e3aaa4cab7?w=60&h=60&fit=crop&crop=center",
+          image:
+            "https://images.unsplash.com/photo-1493663284031-b7e3aaa4cab7?w=60&h=60&fit=crop&crop=center",
         },
         {
           id: "84634470",
@@ -349,7 +430,8 @@ export default {
           price: "65,000 ₽",
           timeLeft: 10800,
           canPromote: true,
-          image: "https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=60&h=60&fit=crop&crop=center",
+          image:
+            "https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=60&h=60&fit=crop&crop=center",
         },
       ],
     };
@@ -387,8 +469,8 @@ export default {
     },
     handleDragStart(index, event) {
       this.draggedIndex = index;
-      event.dataTransfer.effectAllowed = 'move';
-      event.dataTransfer.setData('text/html', '');
+      event.dataTransfer.effectAllowed = "move";
+      event.dataTransfer.setData("text/html", "");
     },
     handleDragEnd() {
       this.draggedIndex = -1;
@@ -396,7 +478,7 @@ export default {
     },
     handleDragOver(index, event) {
       event.preventDefault();
-      event.dataTransfer.dropEffect = 'move';
+      event.dataTransfer.dropEffect = "move";
     },
     handleDragEnter(index, event) {
       event.preventDefault();
@@ -420,36 +502,35 @@ export default {
       this.dragOverIndex = -1;
     },
     shouldShiftUp(index) {
-      return this.draggedIndex !== -1 && 
-             this.dragOverIndex !== -1 && 
-             this.draggedIndex !== index &&
-             this.dragOverIndex !== index &&
-             this.draggedIndex > this.dragOverIndex &&
-             index >= this.dragOverIndex &&
-             index < this.draggedIndex;
+      return (
+        this.draggedIndex !== -1 &&
+        this.dragOverIndex !== -1 &&
+        this.draggedIndex !== index &&
+        this.dragOverIndex !== index &&
+        this.draggedIndex > this.dragOverIndex &&
+        index >= this.dragOverIndex &&
+        index < this.draggedIndex
+      );
     },
     shouldShiftDown(index) {
-      return this.draggedIndex !== -1 && 
-             this.dragOverIndex !== -1 && 
-             this.draggedIndex !== index &&
-             this.dragOverIndex !== index &&
-             this.draggedIndex < this.dragOverIndex &&
-             index <= this.dragOverIndex &&
-             index > this.draggedIndex;
+      return (
+        this.draggedIndex !== -1 &&
+        this.dragOverIndex !== -1 &&
+        this.draggedIndex !== index &&
+        this.dragOverIndex !== index &&
+        this.draggedIndex < this.dragOverIndex &&
+        index <= this.dragOverIndex &&
+        index > this.draggedIndex
+      );
     },
     formatTime(seconds) {
       const days = Math.floor(seconds / 86400);
       const hours = Math.floor((seconds % 86400) / 3600);
       const minutes = Math.floor((seconds % 3600) / 60);
-      const secs = seconds % 60;
 
-      if (days > 0) {
-        return `${days}д.${hours.toString().padStart(2, '0')}ч.${minutes.toString().padStart(2, '0')}м`;
-      } else if (hours > 0) {
-        return `${hours}ч.${minutes.toString().padStart(2, '0')}м.${secs.toString().padStart(2, '0')}с`;
-      } else {
-        return `${minutes}м.${secs.toString().padStart(2, '0')}с`;
-      }
+      return `${days.toString().padStart(2, "0")} д. ${hours
+        .toString()
+        .padStart(2, "0")} ч. ${minutes.toString().padStart(2, "0")} м`;
     },
     promoteToTop(index) {
       if (this.products[index].canPromote) {
@@ -460,7 +541,7 @@ export default {
       }
     },
     updateTimers() {
-      this.products.forEach(product => {
+      this.products.forEach((product) => {
         if (product.timeLeft > 0) {
           product.timeLeft--;
         }
@@ -480,11 +561,11 @@ export default {
         clearInterval(this.timerInterval);
         this.timerInterval = null;
       }
-    }
+    },
   },
   mounted() {
     this.startTimers();
-    
+
     document.addEventListener("click", (e) => {
       if (!e.target.closest(".product-actions")) {
         this.dropdownIndex = -1;
