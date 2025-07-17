@@ -55,59 +55,48 @@
 
     <div class="filters">
       <div class="filters-left">
-        <div class="filters-selects">
-          <select class="filter-select">
-            <option value="active">Активные (4)</option>
-            <option value="pending">В ожидании (2)</option>
-            <option value="draft">Черновики (1)</option>
-          </select>
-          <select class="filter-select">
-            <option value="inactive">Не активные (8)</option>
-            <option value="expired">Истекшие (3)</option>
-            <option value="blocked">Заблокированные (1)</option>
-          </select>
-          <select class="filter-select">
-            <option value="sales">Сортировка по папкам</option>
-            <option value="date">По дате создания</option>
-            <option value="price">По цене</option>
-            <option value="name">По названию</option>
-          </select>
-          <select class="filter-select filter-select-small" v-model="itemsPerPage">
-            <option value="20">20</option>
-            <option value="40">40</option>
-            <option value="60">60</option>
-            <option value="80">80</option>
-          </select>
-        </div>
-
-        <div class="filter-search">
-          <input
-            type="search"
-            placeholder="Поиск"
-            v-model="searchQuery"
-            class="filter-search-input"
-            @input="handleSearch"
-          />
-          <button class="filter-search-btn" @click="handleSearch">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <circle cx="7" cy="7" r="5" stroke="#666" stroke-width="1.5" />
-              <path
-                d="m11 11 3 3"
-                stroke="#666"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </button>
-        </div>
-      </div>
+  <div class="filters-selects-container">
+    <select class="filter-select">
+      <option value="active">Активные (4)</option>
+      <option value="pending">В ожидании (2)</option>
+      <option value="draft">Черновики (1)</option>
+    </select>
+    <select class="filter-select">
+      <option value="inactive">Не активные (8)</option>
+      <option value="expired">Истекшие (3)</option>
+      <option value="blocked">Заблокированные (1)</option>
+    </select>
+    <select class="filter-select">
+      <option value="sales">Сортировка по папкам</option>
+      <option value="date">По дате создания</option>
+      <option value="price">По цене</option>
+      <option value="name">По названию</option>
+    </select>
+    <select class="filter-select filter-select-small" v-model="itemsPerPage">
+      <option value="20">20</option>
+      <option value="40">40</option>
+      <option value="60">60</option>
+      <option value="80">80</option>
+    </select>
+  </div>
+  
+  <div class="filter-search">
+    <input 
+      type="search" 
+      placeholder="Поиск" 
+      v-model="searchQuery"
+      class="filter-search-input"
+      @input="handleSearch"
+    >
+    <button class="filter-search-btn" @click="handleSearch">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="7" cy="7" r="5" stroke="#666" stroke-width="1.5"/>
+        <path d="m11 11 3 3" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+</div>
+      
       <div class="filters-right">
         <label class="toggle-switch">
           <input type="checkbox" v-model="editMode" />
