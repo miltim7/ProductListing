@@ -277,6 +277,28 @@ body {
     border-color: #6c5ce7;
 }
 
+.filter-select-small {
+    min-width: 80px !important;
+}
+
+@media (max-width: 1024px) {
+    .filter-select-small {
+        min-width: 70px !important;
+    }
+}
+
+@media (max-width: 900px) {
+    .filter-select-small {
+        min-width: 60px !important;
+    }
+}
+
+@media (max-width: 500px) {
+    .filter-select-small {
+        min-width: 80px !important;
+    }
+}
+
 .toggle-switch {
     position: relative;
     width: 44px;
@@ -344,8 +366,16 @@ input:checked+.slider:before {
     border-radius: 4px;
 }
 
-.view-btn:hover {
-    background: rgba(0, 0, 0, 0.05);
+.view-btn.active {
+    background: #5856D2;
+}
+
+.view-btn.active:hover {
+    background: #4340B8;
+}
+
+.view-btn.active img {
+    filter: brightness(0) invert(1);
 }
 
 .view-icon2 {
@@ -699,11 +729,11 @@ input:checked+.slider:before {
 }
 
 .status-text--error {
-  color: #EA5252 !important;
+    color: #EA5252 !important;
 }
 
 .product-status--error .status-icon {
-  filter: brightness(1);
+    filter: brightness(1);
 }
 
 .status-text {
@@ -811,13 +841,14 @@ input:checked+.slider:before {
     padding: 12px 16px;
     border-radius: 8px;
     font-size: 12px;
-    line-height: 1.4;
     font-weight: 400;
     width: 280px;
     z-index: 5000;
     display: none;
     margin-bottom: 10px;
     font-family: "Onest", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    word-wrap: break-word;
+    white-space: normal;
 }
 
 .status-tooltip::after {
@@ -837,23 +868,29 @@ input:checked+.slider:before {
 
 .tooltip-content {
     text-align: left;
+    word-wrap: break-word;
+    white-space: normal;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 12px;
+    line-height: 1.4;
 }
 
 @media (max-width: 1200px) {
     .status-tooltip {
         left: -20px;
     }
-    
+
     .status-tooltip::after {
         left: 75%;
     }
 }
 
 @media (max-width: 768px) {
-    .product-status {
+    .status-text {
         cursor: pointer;
     }
-    
+
     .status-tooltip {
         width: 280px;
         left: -200px;
@@ -861,10 +898,14 @@ input:checked+.slider:before {
         font-size: 11px;
         padding: 10px 12px;
     }
-    
+
     .status-tooltip::after {
         left: 85%;
         transform: translateX(-50%);
+    }
+
+    .tooltip-content {
+        font-size: 11px;
     }
 }
 
@@ -875,7 +916,7 @@ input:checked+.slider:before {
         font-size: 10px;
         padding: 8px 10px;
     }
-    
+
     .status-tooltip::after {
         left: 85%;
     }
@@ -888,11 +929,22 @@ input:checked+.slider:before {
         font-size: 9px;
         padding: 6px 8px;
     }
-    
+
     .status-tooltip::after {
         left: 65%;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1914,21 +1966,21 @@ input:checked+.slider:before {
     transition: all 0.2s ease;
 }
 
-.checkbox-option input[type="checkbox"] + .checkbox-custom {
+.checkbox-option input[type="checkbox"]+.checkbox-custom {
     border-radius: 4px;
 }
 
-.checkbox-option input[type="radio"] + .checkbox-custom {
+.checkbox-option input[type="radio"]+.checkbox-custom {
     border-radius: 50%;
 }
 
-.checkbox-option input[type="checkbox"]:checked + .checkbox-custom,
-.checkbox-option input[type="radio"]:checked + .checkbox-custom {
+.checkbox-option input[type="checkbox"]:checked+.checkbox-custom,
+.checkbox-option input[type="radio"]:checked+.checkbox-custom {
     border-color: #5856D2;
     background: #5856D2;
 }
 
-.checkbox-option input[type="checkbox"]:checked + .checkbox-custom::after {
+.checkbox-option input[type="checkbox"]:checked+.checkbox-custom::after {
     content: '✓';
     position: absolute;
     top: 50%;
@@ -1939,7 +1991,7 @@ input:checked+.slider:before {
     font-weight: bold;
 }
 
-.checkbox-option input[type="radio"]:checked + .checkbox-custom::after {
+.checkbox-option input[type="radio"]:checked+.checkbox-custom::after {
     content: '';
     position: absolute;
     top: 50%;
@@ -2397,14 +2449,14 @@ input:checked+.slider:before {
         height: 85px;
         margin-right: -10px;
     }
-    
+
     .drag-icon {
         width: 28px;
         height: 28px;
         bottom: 6px;
         left: 6px;
     }
-    
+
     .product-item.dragging {
         transform: translateY(-6px) scale(1.01);
         box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
@@ -2417,14 +2469,14 @@ input:checked+.slider:before {
         height: 75px;
         margin-right: -10px;
     }
-    
+
     .drag-icon {
         width: 24px;
         height: 24px;
         bottom: 5px;
         left: 5px;
     }
-    
+
     .product-item.dragging {
         transform: translateY(-5px) scale(1.01);
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
@@ -2437,14 +2489,14 @@ input:checked+.slider:before {
         height: 70px;
         margin-right: 0px;
     }
-    
+
     .drag-icon {
         width: 20px;
         height: 20px;
         bottom: 4px;
         left: 4px;
     }
-    
+
     .product-item.dragging {
         transform: translateY(-4px) scale(1.01);
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
@@ -2461,14 +2513,14 @@ input:checked+.slider:before {
         border-radius: 8px;
         align-self: center;
     }
-    
+
     .drag-icon {
         width: 28px;
         height: 28px;
         bottom: 6px;
         left: 6px;
     }
-    
+
     .product-item.dragging {
         transform: translateY(-6px) scale(1.01);
         box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
@@ -2485,14 +2537,14 @@ input:checked+.slider:before {
         border-radius: 8px;
         align-self: center;
     }
-    
+
     .drag-icon {
         width: 24px;
         height: 24px;
         bottom: 5px;
         left: 5px;
     }
-    
+
     .product-item.dragging {
         transform: translateY(-5px) scale(1.01);
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
@@ -2509,14 +2561,14 @@ input:checked+.slider:before {
         border-radius: 8px;
         align-self: center;
     }
-    
+
     .drag-icon {
         width: 20px;
         height: 20px;
         bottom: 4px;
         left: 4px;
     }
-    
+
     .product-item.dragging {
         transform: translateY(-4px) scale(1.01);
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
@@ -2533,14 +2585,14 @@ input:checked+.slider:before {
         border-radius: 6px;
         align-self: center;
     }
-    
+
     .drag-icon {
         width: 16px;
         height: 16px;
         bottom: 3px;
         left: 3px;
     }
-    
+
     .product-item.dragging {
         transform: translateY(-3px) scale(1.01);
         box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
@@ -2596,10 +2648,224 @@ input:checked+.slider:before {
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     width: 264px;
-    height: 252px;
+    height: 210px;
     z-index: 10003;
     display: none;
     margin-top: 4px;
     overflow: hidden;
     padding: 0 20px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 40px 20px;
+    background: white;
+}
+
+.pagination-btn {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ECECEC;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: #666;
+    transition: all 0.2s ease;
+    font-family: "Onest", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+.pagination-btn:hover:not(:disabled) {
+    border-color: #5856D2;
+    color: #5856D2;
+}
+
+.pagination-btn.active {
+    background: #5856D2;
+    border-color: #5856D2;
+    color: white;
+}
+
+.pagination-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.pagination-arrow {
+    color: #999;
+}
+
+.pagination-number {
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .pagination {
+        padding: 30px 15px;
+        gap: 6px;
+    }
+
+    .pagination-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pagination {
+        padding: 25px 10px;
+        gap: 4px;
+    }
+
+    .pagination-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.filter-search {
+    position: relative;
+    min-width: 200px;
+}
+
+.filter-search-input {
+    width: 100%;
+    height: 36px;
+    background: white;
+    border: 1px solid #ECECEC;
+    border-radius: 12px;
+    padding: 8px 40px 8px 12px;
+    font-size: 14px;
+    font-family: "Onest", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    color: #3F3F3F;
+    transition: border-color 0.2s ease;
+}
+
+.filter-search-input:focus {
+    outline: none;
+    border-color: #5856D2;
+}
+
+.filter-search-input::placeholder {
+    color: #B2B2B2;
+}
+
+.filter-search-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.filter-search-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 1024px) {
+    .filter-search {
+        min-width: 180px;
+    }
+    
+    .filter-search-input {
+        height: 34px;
+        font-size: 13px;
+        padding: 6px 36px 6px 10px;
+    }
+}
+
+@media (max-width: 900px) {
+    .filter-search {
+        min-width: 160px;
+    }
+    
+    .filter-search-input {
+        height: 32px;
+        font-size: 12px;
+        padding: 5px 32px 5px 8px;
+    }
+    
+    .filter-search-btn {
+        width: 20px;
+        height: 20px;
+        right: 6px;
+    }
+}
+
+@media (max-width: 500px) {
+    .filter-search {
+        min-width: 140px;
+        flex-shrink: 0;
+    }
+    
+    .filter-search-input {
+        height: 30px;
+        font-size: 11px;
+        padding: 5px 30px 5px 8px;
+    }
+    
+    .filter-search-btn {
+        width: 18px;
+        height: 18px;
+        right: 6px;
+    }
+}
+
+.filters-selects {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+@media (max-width: 1200px) {
+    .filters-left {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    
+    .filters-selects {
+        gap: 12px;
+    }
+}
+
+@media (max-width: 576px) {
+    .filter-search {
+        width: 100%;
+        min-width: auto;
+    }
 }

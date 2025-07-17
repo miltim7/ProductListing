@@ -1,56 +1,112 @@
 <template>
   <div class="container">
     <div class="tabs">
-      <button class="tab active">
+      <button
+        class="tab"
+        :class="{ active: activeTab === 'proposals' }"
+        @click="setActiveTab('proposals')"
+      >
         Предложения
         <span class="tab-badge">12</span>
       </button>
-      <button class="tab">
+      <button
+        class="tab"
+        :class="{ active: activeTab === 'galleries' }"
+        @click="setActiveTab('galleries')"
+      >
         Галереи
         <span class="tab-badge">78</span>
       </button>
-      <button class="tab">
+      <button
+        class="tab"
+        :class="{ active: activeTab === 'favorites' }"
+        @click="setActiveTab('favorites')"
+      >
         Избранное
         <span class="tab-badge">179</span>
       </button>
-      <button class="tab">
+      <button
+        class="tab"
+        :class="{ active: activeTab === 'exhibitions' }"
+        @click="setActiveTab('exhibitions')"
+      >
         Выставки
         <span class="tab-badge">2</span>
       </button>
-      <button class="tab">
+      <button
+        class="tab"
+        :class="{ active: activeTab === 'news' }"
+        @click="setActiveTab('news')"
+      >
         Новости
         <span class="tab-badge">2</span>
       </button>
     </div>
 
     <div class="tabs-mobile">
-      <select class="tabs-select">
-        <option value="proposals" selected>Предложения 12</option>
-        <option value="gallery">Галерея 15</option>
-        <option value="favorites">Избранное 175</option>
-        <option value="exhibitions">Выставки 3</option>
+      <select class="tabs-select" v-model="activeTab" @change="setActiveTab(activeTab)">
+        <option value="proposals">Предложения 12</option>
+        <option value="galleries">Галерея 78</option>
+        <option value="favorites">Избранное 179</option>
+        <option value="exhibitions">Выставки 2</option>
         <option value="news">Новости 2</option>
       </select>
     </div>
 
     <div class="filters">
       <div class="filters-left">
-        <select class="filter-select">
-          <option value="active">Активные (4)</option>
-          <option value="pending">В ожидании (2)</option>
-          <option value="draft">Черновики (1)</option>
-        </select>
-        <select class="filter-select">
-          <option value="inactive">Не активные (8)</option>
-          <option value="expired">Истекшие (3)</option>
-          <option value="blocked">Заблокированные (1)</option>
-        </select>
-        <select class="filter-select">
-          <option value="sales">Сортировка по папкам</option>
-          <option value="date">По дате создания</option>
-          <option value="price">По цене</option>
-          <option value="name">По названию</option>
-        </select>
+        <div class="filters-selects">
+          <select class="filter-select">
+            <option value="active">Активные (4)</option>
+            <option value="pending">В ожидании (2)</option>
+            <option value="draft">Черновики (1)</option>
+          </select>
+          <select class="filter-select">
+            <option value="inactive">Не активные (8)</option>
+            <option value="expired">Истекшие (3)</option>
+            <option value="blocked">Заблокированные (1)</option>
+          </select>
+          <select class="filter-select">
+            <option value="sales">Сортировка по папкам</option>
+            <option value="date">По дате создания</option>
+            <option value="price">По цене</option>
+            <option value="name">По названию</option>
+          </select>
+          <select class="filter-select filter-select-small" v-model="itemsPerPage">
+            <option value="20">20</option>
+            <option value="40">40</option>
+            <option value="60">60</option>
+            <option value="80">80</option>
+          </select>
+        </div>
+
+        <div class="filter-search">
+          <input
+            type="search"
+            placeholder="Поиск"
+            v-model="searchQuery"
+            class="filter-search-input"
+            @input="handleSearch"
+          />
+          <button class="filter-search-btn" @click="handleSearch">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle cx="7" cy="7" r="5" stroke="#666" stroke-width="1.5" />
+              <path
+                d="m11 11 3 3"
+                stroke="#666"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
       <div class="filters-right">
         <label class="toggle-switch">
@@ -59,10 +115,18 @@
         </label>
         <span>Редактировать</span>
         <div class="view-buttons">
-          <button class="view-btn">
+          <button
+            class="view-btn"
+            :class="{ active: viewMode === 'list' }"
+            @click="setViewMode('list')"
+          >
             <img src="/images/burger-icon.png" alt="list" class="view-icon view-icon1" />
           </button>
-          <button class="view-btn active">
+          <button
+            class="view-btn"
+            :class="{ active: viewMode === 'grid' }"
+            @click="setViewMode('grid')"
+          >
             <img src="/images/grid-icon.png" alt="grid" class="view-icon view-icon2" />
           </button>
         </div>
@@ -122,18 +186,19 @@
         >
           <img
             :src="
-              product.canPromote
+              !product.isPromoting
                 ? '/images/refresh-icon.png'
                 : '/images/refresh-icon-red.png'
             "
             alt="refresh"
             class="status-icon"
-            :class="{ 'status-icon-clickable': product.canPromote }"
+            :class="{ 'status-icon-clickable': !product.isPromoting }"
             @click.stop="promoteToTop(index)"
           />
           <span
             class="status-text"
-            :class="{ 'status-text--error': !product.canPromote }"
+            :class="{ 'status-text--error': product.isPromoting }"
+            @click="toggleStatusTooltipMobile(index)"
           >
             {{ formatTime(product.timeLeft) }}
           </span>
@@ -144,9 +209,9 @@
           >
             <div class="tooltip-content">
               {{
-                product.canPromote
+                !product.isPromoting
                   ? "Нажмите на иконку, чтобы поднять товар в топ каталога. Следующее обновление будет доступно через 15 дней."
-                  : "Товар недавно был поднят в топ. Следующее обновление будет доступно через указанное время."
+                  : 'Товар поднят в топ. Используйте троеточие → "Редактировать" для изменения товара. Следующее поднятие в топ будет доступно через указанное время.'
               }}
             </div>
           </div>
@@ -161,17 +226,9 @@
           </button>
 
           <div class="dropdown-menu" :class="{ show: dropdownIndex === index }">
-            <button
-              class="dropdown-item"
-              @click="promoteToTop(index)"
-              :disabled="!product.canPromote"
-            >
+            <button class="dropdown-item" @click="promoteToTop(index)">
               <img src="/images/pen-icon.png" alt="edit" class="dropdown-icon-img" />
-              Обновить
-            </button>
-            <button class="dropdown-item">
-              <img src="/images/arrow-icon.png" alt="promote" class="dropdown-icon-img" />
-              Продвигать
+              Редактировать
             </button>
             <button class="dropdown-item">
               <img src="/images/money-icon.png" alt="price" class="dropdown-icon-img" />
@@ -196,6 +253,62 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="pagination">
+      <button
+        class="pagination-btn pagination-arrow"
+        :disabled="currentPage === 1"
+        @click="prevPage"
+      >
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M10 12L6 8L10 4"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+
+      <button
+        v-for="page in totalPages"
+        :key="page"
+        class="pagination-btn pagination-number"
+        :class="{ active: currentPage === page }"
+        @click="setPage(page)"
+      >
+        {{ page }}
+      </button>
+
+      <button
+        class="pagination-btn pagination-arrow"
+        :disabled="currentPage === totalPages"
+        @click="nextPage"
+      >
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M6 4L10 8L6 12"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
     </div>
 
     <div v-if="showPromoModal" class="modal-overlay" @click="closePromoModal">
@@ -346,6 +459,12 @@ export default {
   name: "ProductsTable",
   data() {
     return {
+      searchQuery: "",
+      currentPage: 1,
+      totalPages: 7,
+      viewMode: "",
+      itemsPerPage: "20",
+      activeTab: "proposals",
       editMode: false,
       dropdownIndex: -1,
       showPromoModal: false,
@@ -355,18 +474,18 @@ export default {
       dragOverIndex: -1,
       timerInterval: null,
       promoData: {
-  mainPage: 'coins',
-  vipBlock: 'coins',
-  socialPost: 'coins',
-  freePromo: 'free',
-},
+        mainPage: "coins",
+        vipBlock: "coins",
+        socialPost: "coins",
+        freePromo: "free",
+      },
       products: [
         {
           id: "84634463",
           title: "Home decor Skull with roses for living room",
           price: "6 650,000 ₽",
-          timeLeft: 3600,
-          canPromote: true,
+          timeLeft: 1296000, // 15 дней
+          isPromoting: false, // зеленый
           image:
             "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=60&h=60&fit=crop&crop=center",
         },
@@ -374,8 +493,8 @@ export default {
           id: "84634464",
           title: "Home decor Skull with roses for living room",
           price: "60,000 ₽",
-          timeLeft: 1296000,
-          canPromote: false,
+          timeLeft: 1296000, // 15 дней
+          isPromoting: false, // зеленый - как остальные
           image:
             "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=60&h=60&fit=crop&crop=center",
         },
@@ -383,8 +502,8 @@ export default {
           id: "84634465",
           title: "Home decor Skull with roses for living room",
           price: "700,000 ₽",
-          timeLeft: 7200,
-          canPromote: true,
+          timeLeft: 1296000, // 15 дней
+          isPromoting: false, // зеленый
           image:
             "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=60&h=60&fit=crop&crop=center",
         },
@@ -392,8 +511,8 @@ export default {
           id: "84634466",
           title: "Home decor Skull with roses for living room",
           price: "600,000 ₽",
-          timeLeft: 900,
-          canPromote: true,
+          timeLeft: 1296000, // 15 дней
+          isPromoting: false, // зеленый
           image:
             "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=60&h=60&fit=crop&crop=center",
         },
@@ -401,8 +520,8 @@ export default {
           id: "84634467",
           title: "Home decor Skull with roses for living room",
           price: "61,000 ₽",
-          timeLeft: 864000,
-          canPromote: false,
+          timeLeft: 1296000, // 15 дней
+          isPromoting: false, // зеленый
           image:
             "https://images.unsplash.com/photo-1558618666-fbd697c83667?w=60&h=60&fit=crop&crop=center",
         },
@@ -410,8 +529,8 @@ export default {
           id: "84634468",
           title: "Home decor Skull with roses for living room",
           price: "8,000 ₽",
-          timeLeft: 1800,
-          canPromote: true,
+          timeLeft: 1296000, // 15 дней
+          isPromoting: false, // зеленый
           image:
             "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=60&h=60&fit=crop&crop=center",
         },
@@ -419,8 +538,8 @@ export default {
           id: "84634469",
           title: "Home decor Skull with roses for living room",
           price: "70,000 ₽",
-          timeLeft: 432000,
-          canPromote: false,
+          timeLeft: 1296000, // 15 дней
+          isPromoting: false, // зеленый
           image:
             "https://images.unsplash.com/photo-1493663284031-b7e3aaa4cab7?w=60&h=60&fit=crop&crop=center",
         },
@@ -428,8 +547,8 @@ export default {
           id: "84634470",
           title: "Home decor Skull with roses for living room",
           price: "65,000 ₽",
-          timeLeft: 10800,
-          canPromote: true,
+          timeLeft: 1296000, // 15 дней
+          isPromoting: false, // зеленый
           image:
             "https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=60&h=60&fit=crop&crop=center",
         },
@@ -437,6 +556,36 @@ export default {
     };
   },
   methods: {
+    handleSearch() {
+      console.log("Поиск:", this.searchQuery);
+    },
+    setPage(page) {
+      if (page >= 1 && page <= this.totalPages) {
+        this.currentPage = page;
+        console.log("Страница:", page);
+      }
+    },
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+      }
+    },
+    setViewMode(mode) {
+      this.viewMode = mode;
+      console.log("Режим просмотра:", mode);
+    },
+    handleItemsPerPageChange() {
+      console.log("Количество на странице:", this.itemsPerPage);
+    },
+    setActiveTab(tabName) {
+      this.activeTab = tabName;
+      console.log("Активный таб:", tabName);
+    },
     toggleDropdown(index) {
       this.dropdownIndex = this.dropdownIndex === index ? -1 : index;
     },
@@ -471,6 +620,16 @@ export default {
       this.draggedIndex = index;
       event.dataTransfer.effectAllowed = "move";
       event.dataTransfer.setData("text/html", "");
+    },
+    toggleStatusTooltipMobile(index) {
+      // Только для мобильных устройств
+      if (window.innerWidth <= 768) {
+        if (this.statusTooltipIndex === index && this.showStatusTooltip) {
+          this.hideStatusTooltip();
+        } else {
+          this.showStatusTooltipHandler(index);
+        }
+      }
     },
     handleDragEnd() {
       this.draggedIndex = -1;
@@ -533,21 +692,24 @@ export default {
         .padStart(2, "0")} ч. ${minutes.toString().padStart(2, "0")} м`;
     },
     promoteToTop(index) {
-      if (this.products[index].canPromote) {
-        this.products[index].canPromote = false;
-        this.products[index].timeLeft = 1296000;
+      if (!this.products[index].isPromoting) {
+        this.products[index].isPromoting = true;
+        this.products[index].timeLeft = 1295999;
         this.dropdownIndex = -1;
         console.log(`Товар ${this.products[index].title} поднят в топ каталога!`);
+      } else {
+        this.dropdownIndex = -1;
+        console.log(`Редактирование товара ${this.products[index].title}`);
       }
     },
     updateTimers() {
       this.products.forEach((product) => {
-        if (product.timeLeft > 0) {
+        if (product.isPromoting && product.timeLeft > 0) {
           product.timeLeft--;
         }
-        if (product.timeLeft === 0 && !product.canPromote) {
-          product.canPromote = true;
-          product.timeLeft = 3600;
+        if (product.isPromoting && product.timeLeft === 0) {
+          product.isPromoting = false;
+          product.timeLeft = 1296000;
         }
       });
     },
