@@ -1,5 +1,3 @@
-<!-- src\components\ProductsTable.vue -->
-
 <template>
   <div class="container">
     <div class="tabs">
@@ -76,8 +74,27 @@
         v-for="(product, index) in products"
         :key="product.id + '_' + index"
         class="product-item"
+        :class="{ 
+          'dragging': draggedIndex === index,
+          'drag-over-top': dragOverIndex === index && draggedIndex !== index && draggedIndex > index,
+          'drag-over-bottom': dragOverIndex === index && draggedIndex !== index && draggedIndex < index,
+          'shifted-up': shouldShiftUp(index),
+          'shifted-down': shouldShiftDown(index)
+        }"
+        draggable="true"
+        @dragstart="handleDragStart(index, $event)"
+        @dragend="handleDragEnd"
+        @dragover="handleDragOver(index, $event)"
+        @dragenter="handleDragEnter(index, $event)"
+        @dragleave="handleDragLeave(index, $event)"
+        @drop="handleDrop(index, $event)"
       >
-        <img :src="product.image" :alt="product.title" class="product-image" />
+        <div class="product-image-container">
+          <img :src="product.image" :alt="product.title" class="product-image" />
+          <div class="drag-icon">
+            <img src="/images/arrows.png" alt="drag" class="arrows-icon" />
+          </div>
+        </div>
 
         <div class="product-info">
           <div class="product-title">{{ product.title }}</div>
@@ -95,22 +112,23 @@
         </button>
 
         <div class="product-status" 
-             :class="{ 'product-status--error': product.status === 'error' }"
              @mouseenter="showStatusTooltipHandler(index)"
              @mouseleave="hideStatusTooltip"
              @click="toggleStatusTooltip(index)">
           <img 
-            :src="product.status === 'error' ? '/images/refresh-icon-red.png' : '/images/refresh-icon.png'" 
+            :src="product.canPromote ? '/images/refresh-icon.png' : '/images/refresh-icon-red.png'" 
             alt="refresh" 
-            class="status-icon" 
+            class="status-icon"
+            :class="{ 'status-icon-clickable': product.canPromote }"
+            @click.stop="promoteToTop(index)"
           />
-          <span class="status-text" :class="{ 'status-text--error': product.status === 'error' }">
-            {{ product.phone }}
+          <span class="status-text" :class="{ 'status-text--error': !product.canPromote }">
+            {{ formatTime(product.timeLeft) }}
           </span>
           
           <div class="status-tooltip" :class="{ show: showStatusTooltip && statusTooltipIndex === index }">
             <div class="tooltip-content">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+              {{ product.canPromote ? 'Нажмите на иконку, чтобы поднять товар в топ каталога. Следующее обновление будет доступно через 15 дней.' : 'Товар недавно был поднят в топ. Следующее обновление будет доступно через указанное время.' }}
             </div>
           </div>
         </div>
@@ -121,7 +139,7 @@
           </button>
 
           <div class="dropdown-menu" :class="{ show: dropdownIndex === index }">
-            <button class="dropdown-item">
+            <button class="dropdown-item" @click="promoteToTop(index)" :disabled="!product.canPromote">
               <img src="/images/pen-icon.png" alt="edit" class="dropdown-icon-img" />
               Обновить
             </button>
@@ -253,6 +271,9 @@ export default {
       showPromoModal: false,
       showStatusTooltip: false,
       statusTooltipIndex: -1,
+      draggedIndex: -1,
+      dragOverIndex: -1,
+      timerInterval: null,
       promoData: {
         mainPageNo: false,
         mainPageCoins: true,
@@ -270,73 +291,65 @@ export default {
           id: "84634463",
           title: "Home decor Skull with roses for living room",
           price: "6 650,000 ₽",
-          phone: "15г.04ч.44м",
-          status: "active",
-          image:
-            "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=60&h=60&fit=crop&crop=center",
+          timeLeft: 3600,
+          canPromote: true,
+          image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=60&h=60&fit=crop&crop=center",
         },
         {
-          id: "84634463",
+          id: "84634464",
           title: "Home decor Skull with roses for living room",
           price: "60,000 ₽",
-          phone: "15г.04ч.44м",
-          status: "active",
-          image:
-            "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=60&h=60&fit=crop&crop=center",
+          timeLeft: 1296000,
+          canPromote: false,
+          image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=60&h=60&fit=crop&crop=center",
         },
         {
-          id: "84634463",
+          id: "84634465",
           title: "Home decor Skull with roses for living room",
           price: "700,000 ₽",
-          phone: "15г.04ч.44м",
-          status: "error",
-          image:
-            "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=60&h=60&fit=crop&crop=center",
+          timeLeft: 7200,
+          canPromote: true,
+          image: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=60&h=60&fit=crop&crop=center",
         },
         {
-          id: "84634463",
+          id: "84634466",
           title: "Home decor Skull with roses for living room",
           price: "600,000 ₽",
-          phone: "15г.04ч.44м",
-          status: "active",
-          image:
-            "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=60&h=60&fit=crop&crop=center",
+          timeLeft: 900,
+          canPromote: true,
+          image: "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=60&h=60&fit=crop&crop=center",
         },
         {
-          id: "84634463",
+          id: "84634467",
           title: "Home decor Skull with roses for living room",
           price: "61,000 ₽",
-          phone: "15г.04ч.44м",
-          status: "active",
-          image:
-            "https://images.unsplash.com/photo-1558618666-fbd697c83667?w=60&h=60&fit=crop&crop=center",
+          timeLeft: 864000,
+          canPromote: false,
+          image: "https://images.unsplash.com/photo-1558618666-fbd697c83667?w=60&h=60&fit=crop&crop=center",
         },
         {
-          id: "84634463",
+          id: "84634468",
           title: "Home decor Skull with roses for living room",
           price: "8,000 ₽",
-          phone: "15г.04ч.44м",
-          status: "active",
-          image:
-            "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=60&h=60&fit=crop&crop=center",
+          timeLeft: 1800,
+          canPromote: true,
+          image: "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=60&h=60&fit=crop&crop=center",
         },
         {
-          id: "84634463",
+          id: "84634469",
           title: "Home decor Skull with roses for living room",
           price: "70,000 ₽",
-          phone: "15г.04ч.44м",
-          status: "active",
-          image:
-            "https://images.unsplash.com/photo-1493663284031-b7e3aaa4cab7?w=60&h=60&fit=crop&crop=center",
+          timeLeft: 432000,
+          canPromote: false,
+          image: "https://images.unsplash.com/photo-1493663284031-b7e3aaa4cab7?w=60&h=60&fit=crop&crop=center",
         },
         {
-          id: "84634463",
+          id: "84634470",
           title: "Home decor Skull with roses for living room",
           price: "65,000 ₽",
-          phone: "15г.04ч.44м",
-          status: "active",
-          image:
-            "https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=60&h=60&fit=crop&crop=center",
+          timeLeft: 10800,
+          canPromote: true,
+          image: "https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=60&h=60&fit=crop&crop=center",
         },
       ],
     };
@@ -371,9 +384,107 @@ export default {
       } else {
         this.showStatusTooltipHandler(index);
       }
+    },
+    handleDragStart(index, event) {
+      this.draggedIndex = index;
+      event.dataTransfer.effectAllowed = 'move';
+      event.dataTransfer.setData('text/html', '');
+    },
+    handleDragEnd() {
+      this.draggedIndex = -1;
+      this.dragOverIndex = -1;
+    },
+    handleDragOver(index, event) {
+      event.preventDefault();
+      event.dataTransfer.dropEffect = 'move';
+    },
+    handleDragEnter(index, event) {
+      event.preventDefault();
+      if (this.draggedIndex !== -1 && this.draggedIndex !== index) {
+        this.dragOverIndex = index;
+      }
+    },
+    handleDragLeave(index, event) {
+      if (!event.currentTarget.contains(event.relatedTarget)) {
+        this.dragOverIndex = -1;
+      }
+    },
+    handleDrop(dropIndex, event) {
+      event.preventDefault();
+      if (this.draggedIndex !== -1 && this.draggedIndex !== dropIndex) {
+        const draggedItem = this.products[this.draggedIndex];
+        this.products.splice(this.draggedIndex, 1);
+        this.products.splice(dropIndex, 0, draggedItem);
+      }
+      this.draggedIndex = -1;
+      this.dragOverIndex = -1;
+    },
+    shouldShiftUp(index) {
+      return this.draggedIndex !== -1 && 
+             this.dragOverIndex !== -1 && 
+             this.draggedIndex !== index &&
+             this.dragOverIndex !== index &&
+             this.draggedIndex > this.dragOverIndex &&
+             index >= this.dragOverIndex &&
+             index < this.draggedIndex;
+    },
+    shouldShiftDown(index) {
+      return this.draggedIndex !== -1 && 
+             this.dragOverIndex !== -1 && 
+             this.draggedIndex !== index &&
+             this.dragOverIndex !== index &&
+             this.draggedIndex < this.dragOverIndex &&
+             index <= this.dragOverIndex &&
+             index > this.draggedIndex;
+    },
+    formatTime(seconds) {
+      const days = Math.floor(seconds / 86400);
+      const hours = Math.floor((seconds % 86400) / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
+      const secs = seconds % 60;
+
+      if (days > 0) {
+        return `${days}д.${hours.toString().padStart(2, '0')}ч.${minutes.toString().padStart(2, '0')}м`;
+      } else if (hours > 0) {
+        return `${hours}ч.${minutes.toString().padStart(2, '0')}м.${secs.toString().padStart(2, '0')}с`;
+      } else {
+        return `${minutes}м.${secs.toString().padStart(2, '0')}с`;
+      }
+    },
+    promoteToTop(index) {
+      if (this.products[index].canPromote) {
+        this.products[index].canPromote = false;
+        this.products[index].timeLeft = 1296000;
+        this.dropdownIndex = -1;
+        console.log(`Товар ${this.products[index].title} поднят в топ каталога!`);
+      }
+    },
+    updateTimers() {
+      this.products.forEach(product => {
+        if (product.timeLeft > 0) {
+          product.timeLeft--;
+        }
+        if (product.timeLeft === 0 && !product.canPromote) {
+          product.canPromote = true;
+          product.timeLeft = 3600;
+        }
+      });
+    },
+    startTimers() {
+      this.timerInterval = setInterval(() => {
+        this.updateTimers();
+      }, 1000);
+    },
+    stopTimers() {
+      if (this.timerInterval) {
+        clearInterval(this.timerInterval);
+        this.timerInterval = null;
+      }
     }
   },
   mounted() {
+    this.startTimers();
+    
     document.addEventListener("click", (e) => {
       if (!e.target.closest(".product-actions")) {
         this.dropdownIndex = -1;
@@ -382,6 +493,9 @@ export default {
         this.hideStatusTooltip();
       }
     });
+  },
+  beforeDestroy() {
+    this.stopTimers();
   },
 };
 </script>
