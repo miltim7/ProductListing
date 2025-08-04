@@ -122,7 +122,7 @@ export default {
       this.$forceUpdate();
     },
     checkMobile() {
-      this.isMobile = window.innerWidth < 375;
+      this.isMobile = window.innerWidth < 480;
     }
   },
   mounted() {
