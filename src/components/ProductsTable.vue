@@ -57,13 +57,11 @@
       <div class="filters-left">
         <div class="filters-selects-container">
           <select class="filter-select">
-            <option disabled selected>Статус</option>
             <option value="active">Активные</option>
             <option value="pending">Не активные</option>
           </select>
 
           <select class="filter-select">
-            <option disabled selected>Тип</option>
             <option value="inactive">На продажу</option>
             <option value="expired">Для примера</option>
             <option value="auction">Аукцион</option>
@@ -71,7 +69,6 @@
           </select>
 
           <select class="filter-select">
-            <option disabled selected>Сортировка</option>
             <option value="date">По дате</option>
             <option value="price">По цене</option>
             <option value="name">По номеру</option>
