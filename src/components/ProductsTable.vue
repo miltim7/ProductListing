@@ -6,7 +6,7 @@
         :class="{ active: activeTab === 'proposals' }"
         @click="setActiveTab('proposals')"
       >
-        Предложения
+        Товары
         <span class="tab-badge">12</span>
       </button>
       <button
@@ -14,7 +14,7 @@
         :class="{ active: activeTab === 'galleries' }"
         @click="setActiveTab('galleries')"
       >
-        Галереи
+        Папки
         <span class="tab-badge">78</span>
       </button>
       <button
@@ -30,7 +30,7 @@
         :class="{ active: activeTab === 'exhibitions' }"
         @click="setActiveTab('exhibitions')"
       >
-        Выставки
+        Мероприятия
         <span class="tab-badge">2</span>
       </button>
       <button
@@ -45,10 +45,10 @@
 
     <div class="tabs-mobile">
       <select class="tabs-select" v-model="activeTab" @change="setActiveTab(activeTab)">
-        <option value="proposals">Предложения 12</option>
-        <option value="galleries">Галерея 78</option>
+        <option value="proposals">Товары 12</option>
+        <option value="galleries">Папки 78</option>
         <option value="favorites">Избранное 179</option>
-        <option value="exhibitions">Выставки 2</option>
+        <option value="exhibitions">Мероприятия 2</option>
         <option value="news">Новости 2</option>
       </select>
     </div>
@@ -57,20 +57,24 @@
       <div class="filters-left">
         <div class="filters-selects-container">
           <select class="filter-select">
-            <option value="active">Активные (4)</option>
-            <option value="pending">В ожидании (2)</option>
-            <option value="draft">Черновики (1)</option>
+            <option disabled selected>Статус</option>
+            <option value="active">Активные</option>
+            <option value="pending">Не активные</option>
           </select>
+
           <select class="filter-select">
-            <option value="inactive">Не активные (8)</option>
-            <option value="expired">Истекшие (3)</option>
-            <option value="blocked">Заблокированные (1)</option>
+            <option disabled selected>Тип</option>
+            <option value="inactive">На продажу</option>
+            <option value="expired">Для примера</option>
+            <option value="auction">Аукцион</option>
+            <option value="sold">Продано</option>
           </select>
+
           <select class="filter-select">
-            <option value="sales">Сортировка по папкам</option>
-            <option value="date">По дате создания</option>
+            <option disabled selected>Сортировка</option>
+            <option value="date">По дате</option>
             <option value="price">По цене</option>
-            <option value="name">По названию</option>
+            <option value="name">По номеру</option>
           </select>
           <select class="filter-select filter-select-small" v-model="itemsPerPage">
             <option value="20шт">20шт</option>
@@ -79,7 +83,6 @@
             <option value="80шт">80шт</option>
           </select>
         </div>
-
         <div class="filter-search">
           <input
             type="search"
