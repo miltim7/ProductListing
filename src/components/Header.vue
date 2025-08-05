@@ -47,7 +47,10 @@
             </button>
           </div>
           <div class="header-top__right">
-            <div class="header__language custom_select">
+            <div
+              class="header__language custom_select"
+              :class="{ active: languageSelectOpen }"
+            >
               <select @focus="toggleSelect" @blur="closeSelect">
                 <option value="">RU</option>
                 <option value="">ENG</option>
@@ -71,8 +74,11 @@
             <div class="header-bottom__right">
               <div class="header-bottom__group">
                 <div class="header__catalog">
-                  <div class="header__catalog-show">
-                    <div class="catalog-burger">
+                  <div class="header__catalog-show" @click="toggleCatalog">
+                    <div
+                      class="catalog-burger"
+                      :class="{ 'catalog-burger--active': catalogOpen }"
+                    >
                       <span></span>
                       <span></span>
                       <span></span>
@@ -80,62 +86,115 @@
                     </div>
                     <div class="catalog-burger__text">Каталог</div>
                   </div>
-                  <div class="header__catalog-hidden">
+                  <div
+                    class="header__catalog-hidden"
+                    :class="{ 'header__catalog-hidden--active': catalogOpen }"
+                  >
                     <div class="header__catalog-wrap tabs-inner">
                       <div class="header__catalog-head">
                         <a
                           href=""
                           data-tab-path="1"
-                          class="header__catalog-tab tab tab--active"
+                          class="header__catalog-tab tab"
+                          :class="{ 'tab--active': activeTab === '1' }"
+                          @mouseenter="setActiveTab('1')"
                         >
                           <i>
                             <img src="/images/catalog-icon11.svg" alt="" />
                           </i>
                           <span>Картины</span>
                         </a>
-                        <a href="" data-tab-path="2" class="header__catalog-tab tab">
+                        <a
+                          href=""
+                          data-tab-path="2"
+                          class="header__catalog-tab tab"
+                          :class="{ 'tab--active': activeTab === '2' }"
+                          @mouseenter="setActiveTab('2')"
+                        >
                           <i>
                             <img src="/images/catalog-icon12.svg" alt="" />
                           </i>
                           <span>Дом и стиль жизни</span>
                         </a>
-                        <a href="" data-tab-path="3" class="header__catalog-tab tab">
+                        <a
+                          href=""
+                          data-tab-path="3"
+                          class="header__catalog-tab tab"
+                          :class="{ 'tab--active': activeTab === '3' }"
+                          @mouseenter="setActiveTab('3')"
+                        >
                           <i>
                             <img src="/images/catalog-icon13.svg" alt="" />
                           </i>
                           <span>Рисунок, графика</span>
                         </a>
-                        <a href="" data-tab-path="4" class="header__catalog-tab tab">
+                        <a
+                          href=""
+                          data-tab-path="4"
+                          class="header__catalog-tab tab"
+                          :class="{ 'tab--active': activeTab === '4' }"
+                          @mouseenter="setActiveTab('4')"
+                        >
                           <i>
                             <img src="/images/catalog-icon14.svg" alt="" />
                           </i>
                           <span>Аксессуары</span>
                         </a>
-                        <a href="" data-tab-path="5" class="header__catalog-tab tab">
+                        <a
+                          href=""
+                          data-tab-path="5"
+                          class="header__catalog-tab tab"
+                          :class="{ 'tab--active': activeTab === '5' }"
+                          @mouseenter="setActiveTab('5')"
+                        >
                           <i>
                             <img src="/images/catalog-icon15.svg" alt="" />
                           </i>
                           <span>Сумки и кошельки</span>
                         </a>
-                        <a href="" data-tab-path="6" class="header__catalog-tab tab">
+                        <a
+                          href=""
+                          data-tab-path="6"
+                          class="header__catalog-tab tab"
+                          :class="{ 'tab--active': activeTab === '6' }"
+                          @mouseenter="setActiveTab('6')"
+                        >
                           <i>
                             <img src="/images/catalog-icon16.svg" alt="" />
                           </i>
                           <span>Украшения</span>
                         </a>
-                        <a href="" data-tab-path="7" class="header__catalog-tab tab">
+                        <a
+                          href=""
+                          data-tab-path="7"
+                          class="header__catalog-tab tab"
+                          :class="{ 'tab--active': activeTab === '7' }"
+                          @mouseenter="setActiveTab('7')"
+                        >
                           <i>
                             <img src="/images/catalog-icon17.svg" alt="" />
                           </i>
                           <span>Игрушки и игры</span>
                         </a>
-                        <a href="" data-tab-path="8" class="header__catalog-tab tab">
+                        <a
+                          href=""
+                          data-tab-path="8"
+                          class="header__catalog-tab tab"
+                          :class="{ 'tab--active': activeTab === '8' }"
+                          @mouseenter="setActiveTab('8')"
+                        >
                           <i>
                             <img src="/images/catalog-icon18.svg" alt="" />
                           </i>
                           <span>Материалы для творчества</span>
                         </a>
-                        <a href="" data-tab-path="9" class="header__catalog-tab tab">
+                        <a
+                          href=""
+                          data-tab-path="9"
+                          class="header__catalog-tab tab"
+                          :class="{ 'tab--active': activeTab === '9' }"
+                          @mouseenter="setActiveTab('9')"
+                        >
                           <i>
                             <img src="/images/catalog-icon19.svg" alt="" />
                           </i>
@@ -145,7 +204,8 @@
                       <div class="header__catalog-body">
                         <div
                           data-content-path="1"
-                          class="header__catalog-content tab__content tab__content--active"
+                          class="header__catalog-content tab__content"
+                          :class="{ 'tab__content--active': activeTab === '1' }"
                         >
                           <div class="header__catalog-title">
                             Картины<span>456 товаров</span>
@@ -166,7 +226,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -186,7 +249,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -206,7 +272,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -226,7 +295,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -246,7 +318,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -266,7 +341,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -276,6 +354,7 @@
                         <div
                           data-content-path="2"
                           class="header__catalog-content tab__content"
+                          :class="{ 'tab__content--active': activeTab === '2' }"
                         >
                           <div class="header__catalog-title">
                             Дом и стиль жизни<span>456 товаров</span>
@@ -296,7 +375,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -316,7 +398,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -336,7 +421,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -356,7 +444,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -376,7 +467,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -396,7 +490,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -406,6 +503,7 @@
                         <div
                           data-content-path="3"
                           class="header__catalog-content tab__content"
+                          :class="{ 'tab__content--active': activeTab === '3' }"
                         >
                           <div class="header__catalog-title">
                             Рисунок, графика<span>456 товаров</span>
@@ -426,7 +524,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -446,7 +547,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -466,7 +570,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -486,7 +593,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -506,7 +616,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -526,7 +639,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -536,6 +652,7 @@
                         <div
                           data-content-path="4"
                           class="header__catalog-content tab__content"
+                          :class="{ 'tab__content--active': activeTab === '4' }"
                         >
                           <div class="header__catalog-title">
                             Аксессуары<span>456 товаров</span>
@@ -556,7 +673,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -576,7 +696,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -596,7 +719,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -616,7 +742,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -636,7 +765,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -656,7 +788,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -666,6 +801,7 @@
                         <div
                           data-content-path="5"
                           class="header__catalog-content tab__content"
+                          :class="{ 'tab__content--active': activeTab === '5' }"
                         >
                           <div class="header__catalog-title">
                             Сумки и кошельки<span>456 товаров</span>
@@ -686,7 +822,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -706,7 +845,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -726,7 +868,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -746,7 +891,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -766,7 +914,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -786,7 +937,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -796,6 +950,7 @@
                         <div
                           data-content-path="6"
                           class="header__catalog-content tab__content"
+                          :class="{ 'tab__content--active': activeTab === '6' }"
                         >
                           <div class="header__catalog-title">
                             Украшения<span>456 товаров</span>
@@ -816,7 +971,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -836,7 +994,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -856,7 +1017,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -876,7 +1040,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -896,7 +1063,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -916,7 +1086,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -926,6 +1099,7 @@
                         <div
                           data-content-path="7"
                           class="header__catalog-content tab__content"
+                          :class="{ 'tab__content--active': activeTab === '7' }"
                         >
                           <div class="header__catalog-title">
                             Игрушки и игры<span>456 товаров</span>
@@ -946,7 +1120,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -966,7 +1143,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -986,7 +1166,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -1006,7 +1189,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -1026,7 +1212,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -1046,7 +1235,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -1056,6 +1248,7 @@
                         <div
                           data-content-path="8"
                           class="header__catalog-content tab__content"
+                          :class="{ 'tab__content--active': activeTab === '8' }"
                         >
                           <div class="header__catalog-title">
                             Материалы для творчества<span>456 товаров</span>
@@ -1076,7 +1269,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -1096,7 +1292,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -1116,7 +1315,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -1136,7 +1338,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -1156,7 +1361,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -1176,7 +1384,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -1186,6 +1397,7 @@
                         <div
                           data-content-path="9"
                           class="header__catalog-content tab__content"
+                          :class="{ 'tab__content--active': activeTab === '9' }"
                         >
                           <div class="header__catalog-title">
                             Коллекционирование<span>456 товаров</span>
@@ -1206,7 +1418,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -1226,7 +1441,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -1246,7 +1464,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -1266,7 +1487,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -1286,7 +1510,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -1306,7 +1533,10 @@
                                 <li><a href="">Украшения</a></li>
                                 <li><a href="">Украшения</a></li>
                               </ul>
-                              <div class="header__catalog-more show-more">
+                              <div
+                                class="header__catalog-more show-more"
+                                @click="toggleMore"
+                              >
                                 <span>Еще</span>
                                 <span>Скрыть</span>
                               </div>
@@ -1343,7 +1573,11 @@
                     </svg>
                   </button>
                 </div>
-                <div class="search-mob__btn">
+                <div
+                  class="search-mob__btn"
+                  :class="{ 'search-mob__btn--active': mobileSearchOpen }"
+                  @click="toggleMobileSearch"
+                >
                   <i>
                     <svg
                       width="21"
@@ -1431,15 +1665,18 @@
                   <span class="header__basket-text">Корзина</span>
                 </a>
               </div>
-              <div class="burger">
+              <div class="burger" @click="toggleBurgerMenu">
                 <img src="/images/burger-icon.svg" alt="" />
               </div>
             </div>
           </div>
           <div class="header-bottom__group">
             <div class="header__catalog">
-              <div class="header__catalog-show">
-                <div class="catalog-burger">
+              <div class="header__catalog-show" @click="toggleMobileCatalog">
+                <div
+                  class="catalog-burger"
+                  :class="{ 'catalog-burger--active': mobileCatalogOpen }"
+                >
                   <span></span>
                   <span></span>
                   <span></span>
@@ -1447,11 +1684,14 @@
                 </div>
                 <div class="catalog-burger__text">Каталог</div>
               </div>
-              <div class="header__catalog-hidden">
+              <div
+                class="header__catalog-hidden"
+                :class="{ 'header__catalog-hidden--active': mobileCatalogOpen }"
+              >
                 <div class="header__catalog-top">
                   <div class="header__catalog-title">
                     <span>Каталог</span>
-                    <i class="header__catalog-close">
+                    <i class="header__catalog-close" @click="closeMobileCatalog">
                       <img src="/images/close2.svg" alt="" />
                     </i>
                   </div>
@@ -1483,147 +1723,26 @@
                   </button>
                 </div>
                 <div class="header__catalog-items2">
-                  <div class="header__catalog-item2">
-                    <div class="item-show">
+                  <div
+                    class="header__catalog-item2"
+                    v-for="(item, index) in catalogItems"
+                    :key="index"
+                  >
+                    <div
+                      class="item-show"
+                      :class="{ 'item-show--active': item.isOpen }"
+                      @click="toggleCatalogItem(index)"
+                    >
                       <a href="catalog.html">
-                        <img src="/images/catalog-icon11.svg" alt="" />
+                        <img :src="item.icon" alt="" />
                       </a>
-                      <a href="catalog.html">Картины</a>
+                      <a href="catalog.html">{{ item.title }}</a>
                     </div>
-                    <div class="item-hidden">
+                    <div class="item-hidden" v-show="item.isOpen">
                       <ul class="header__catalog-list">
-                        <li><a href="">Пункт номер1</a></li>
-                        <li><a href="">Какой то длинный пункт 2</a></li>
-                        <li><a href="">Пункт название что то</a></li>
-                        <li><a href="">Какой то длинный пункт 2</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div class="header__catalog-item2">
-                    <div class="item-show">
-                      <a href="catalog.html">
-                        <img src="/images/catalog-icon12.svg" alt="" />
-                      </a>
-                      <a href="catalog.html">Дом и стиль жизни</a>
-                    </div>
-                    <div class="item-hidden">
-                      <ul class="header__catalog-list">
-                        <li><a href="">Пункт номер1</a></li>
-                        <li><a href="">Какой то длинный пункт 2</a></li>
-                        <li><a href="">Пункт название что то</a></li>
-                        <li><a href="">Какой то длинный пункт 2</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div class="header__catalog-item2">
-                    <div class="item-show">
-                      <a href="catalog.html">
-                        <img src="/images/catalog-icon13.svg" alt="" />
-                      </a>
-                      <a href="catalog.html">Рисунок, графика</a>
-                    </div>
-                    <div class="item-hidden">
-                      <ul class="header__catalog-list">
-                        <li><a href="">Пункт номер1</a></li>
-                        <li><a href="">Какой то длинный пункт 2</a></li>
-                        <li><a href="">Пункт название что то</a></li>
-                        <li><a href="">Какой то длинный пункт 2</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div class="header__catalog-item2">
-                    <div class="item-show">
-                      <a href="catalog.html">
-                        <img src="/images/catalog-icon14.svg" alt="" />
-                      </a>
-                      <a href="catalog.html">Аксессуары</a>
-                    </div>
-                    <div class="item-hidden">
-                      <ul class="header__catalog-list">
-                        <li><a href="">Пункт номер1</a></li>
-                        <li><a href="">Какой то длинный пункт 2</a></li>
-                        <li><a href="">Пункт название что то</a></li>
-                        <li><a href="">Какой то длинный пункт 2</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div class="header__catalog-item2">
-                    <div class="item-show">
-                      <a href="catalog.html">
-                        <img src="/images/catalog-icon15.svg" alt="" />
-                      </a>
-                      <a href="catalog.html">Сумки и кошельки</a>
-                    </div>
-                    <div class="item-hidden">
-                      <ul class="header__catalog-list">
-                        <li><a href="">Пункт номер1</a></li>
-                        <li><a href="">Какой то длинный пункт 2</a></li>
-                        <li><a href="">Пункт название что то</a></li>
-                        <li><a href="">Какой то длинный пункт 2</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div class="header__catalog-item2">
-                    <div class="item-show">
-                      <a href="catalog.html">
-                        <img src="/images/catalog-icon16.svg" alt="" />
-                      </a>
-                      <a href="catalog.html">Украшения</a>
-                    </div>
-                    <div class="item-hidden">
-                      <ul class="header__catalog-list">
-                        <li><a href="">Пункт номер1</a></li>
-                        <li><a href="">Какой то длинный пункт 2</a></li>
-                        <li><a href="">Пункт название что то</a></li>
-                        <li><a href="">Какой то длинный пункт 2</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div class="header__catalog-item2">
-                    <div class="item-show">
-                      <a href="catalog.html">
-                        <img src="/images/catalog-icon17.svg" alt="" />
-                      </a>
-                      <a href="catalog.html">Игрушки и игры</a>
-                    </div>
-                    <div class="item-hidden">
-                      <ul class="header__catalog-list">
-                        <li><a href="">Пункт номер1</a></li>
-                        <li><a href="">Какой то длинный пункт 2</a></li>
-                        <li><a href="">Пункт название что то</a></li>
-                        <li><a href="">Какой то длинный пункт 2</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div class="header__catalog-item2">
-                    <div class="item-show">
-                      <a href="catalog.html">
-                        <img src="/images/catalog-icon18.svg" alt="" />
-                      </a>
-                      <a href="catalog.html">Материалы для творчества</a>
-                    </div>
-                    <div class="item-hidden">
-                      <ul class="header__catalog-list">
-                        <li><a href="">Пункт номер1</a></li>
-                        <li><a href="">Какой то длинный пункт 2</a></li>
-                        <li><a href="">Пункт название что то</a></li>
-                        <li><a href="">Какой то длинный пункт 2</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div class="header__catalog-item2">
-                    <div class="item-show">
-                      <a href="catalog.html">
-                        <img src="/images/catalog-icon19.svg" alt="" />
-                      </a>
-                      <a href="catalog.html">Коллекционирование</a>
-                    </div>
-                    <div class="item-hidden">
-                      <ul class="header__catalog-list">
-                        <li><a href="">Пункт номер1</a></li>
-                        <li><a href="">Какой то длинный пункт 2</a></li>
-                        <li><a href="">Пункт название что то</a></li>
-                        <li><a href="">Какой то длинный пункт 2</a></li>
+                        <li v-for="subItem in item.subItems" :key="subItem">
+                          <a href="">{{ subItem }}</a>
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -1657,7 +1776,7 @@
               </button>
             </div>
           </div>
-          <div class="search-mob">
+          <div class="search-mob" :class="{ 'search-mob--active': mobileSearchOpen }">
             <div class="header__search">
               <input type="search" placeholder="Поиск" />
               <button class="header__search-btn open-search">
@@ -1718,35 +1837,206 @@
         </a>
       </div>
     </div>
-    <div class="header__catalog-bg"></div>
+    <div
+      class="header__catalog-bg"
+      :class="{ 'bg--active': catalogOpen }"
+      @click="closeCatalog"
+    ></div>
   </header>
 </template>
 
 <script>
 export default {
   name: "Header",
+  data() {
+    return {
+      languageSelectOpen: false,
+      catalogOpen: false,
+      mobileCatalogOpen: false,
+      mobileSearchOpen: false,
+      activeTab: "1",
+      catalogItems: [
+        {
+          title: "Картины",
+          icon: "/images/catalog-icon11.svg",
+          isOpen: false,
+          subItems: [
+            "Пункт номер1",
+            "Какой то длинный пункт 2",
+            "Пункт название что то",
+            "Какой то длинный пункт 2",
+          ],
+        },
+        {
+          title: "Дом и стиль жизни",
+          icon: "/images/catalog-icon12.svg",
+          isOpen: false,
+          subItems: [
+            "Пункт номер1",
+            "Какой то длинный пункт 2",
+            "Пункт название что то",
+            "Какой то длинный пункт 2",
+          ],
+        },
+        {
+          title: "Рисунок, графика",
+          icon: "/images/catalog-icon13.svg",
+          isOpen: false,
+          subItems: [
+            "Пункт номер1",
+            "Какой то длинный пункт 2",
+            "Пункт название что то",
+            "Какой то длинный пункт 2",
+          ],
+        },
+        {
+          title: "Аксессуары",
+          icon: "/images/catalog-icon14.svg",
+          isOpen: false,
+          subItems: [
+            "Пункт номер1",
+            "Какой то длинный пункт 2",
+            "Пункт название что то",
+            "Какой то длинный пункт 2",
+          ],
+        },
+        {
+          title: "Сумки и кошельки",
+          icon: "/images/catalog-icon15.svg",
+          isOpen: false,
+          subItems: [
+            "Пункт номер1",
+            "Какой то длинный пункт 2",
+            "Пункт название что то",
+            "Какой то длинный пункт 2",
+          ],
+        },
+        {
+          title: "Украшения",
+          icon: "/images/catalog-icon16.svg",
+          isOpen: false,
+          subItems: [
+            "Пункт номер1",
+            "Какой то длинный пункт 2",
+            "Пункт название что то",
+            "Какой то длинный пункт 2",
+          ],
+        },
+        {
+          title: "Игрушки и игры",
+          icon: "/images/catalog-icon17.svg",
+          isOpen: false,
+          subItems: [
+            "Пункт номер1",
+            "Какой то длинный пункт 2",
+            "Пункт название что то",
+            "Какой то длинный пункт 2",
+          ],
+        },
+        {
+          title: "Материалы для творчества",
+          icon: "/images/catalog-icon18.svg",
+          isOpen: false,
+          subItems: [
+            "Пункт номер1",
+            "Какой то длинный пункт 2",
+            "Пункт название что то",
+            "Какой то длинный пункт 2",
+          ],
+        },
+        {
+          title: "Коллекционирование",
+          icon: "/images/catalog-icon19.svg",
+          isOpen: false,
+          subItems: [
+            "Пункт номер1",
+            "Какой то длинный пункт 2",
+            "Пункт название что то",
+            "Какой то длинный пункт 2",
+          ],
+        },
+      ],
+    };
+  },
   mounted() {
-    this.loadScript("/header/libs.min.js");
-    this.loadScript("/header/main.min.js");
+    // Добавляем обработчик клика по документу для закрытия каталога
+    document.addEventListener("click", this.handleDocumentClick);
+  },
+  beforeUnmount() {
+    // Удаляем обработчик при уничтожении компонента
+    document.removeEventListener("click", this.handleDocumentClick);
   },
   methods: {
-    loadScript(src) {
-      return new Promise((resolve, reject) => {
-        const script = document.createElement("script");
-        script.src = src;
-        script.onload = resolve;
-        script.onerror = reject;
-        document.head.appendChild(script);
-      });
+    toggleSelect() {
+      this.languageSelectOpen = !this.languageSelectOpen;
     },
-    toggleSelect(event) {
-      const selectContainer = event.target.closest(".custom_select");
-      selectContainer.classList.toggle("active");
+    closeSelect() {
+      this.languageSelectOpen = false;
     },
+    toggleCatalog() {
+      this.catalogOpen = !this.catalogOpen;
+      if (this.catalogOpen) {
+        document.body.classList.add("fixed-body");
+      } else {
+        document.body.classList.remove("fixed-body");
+      }
+    },
+    closeCatalog() {
+      this.catalogOpen = false;
+      document.body.classList.remove("fixed-body");
+    },
+    toggleMobileCatalog() {
+      this.mobileCatalogOpen = !this.mobileCatalogOpen;
+      if (this.mobileCatalogOpen) {
+        document.body.classList.add("fixed-body");
+      } else {
+        document.body.classList.remove("fixed-body");
+      }
+    },
+    closeMobileCatalog() {
+      this.mobileCatalogOpen = false;
+      document.body.classList.remove("fixed-body");
+    },
+    toggleBurgerMenu() {
+      this.mobileCatalogOpen = !this.mobileCatalogOpen;
+      if (this.mobileCatalogOpen) {
+        document.body.classList.add("fixed-body");
+      } else {
+        document.body.classList.remove("fixed-body");
+      }
+    },
+    toggleMobileSearch() {
+      this.mobileSearchOpen = !this.mobileSearchOpen;
+    },
+    setActiveTab(tabId) {
+      this.activeTab = tabId;
+    },
+    toggleCatalogItem(index) {
+      this.catalogItems[index].isOpen = !this.catalogItems[index].isOpen;
+    },
+    toggleMore(event) {
+      const moreBtn = event.currentTarget;
+      const textOverflow = moreBtn.previousElementSibling;
 
-    closeSelect(event) {
-      const selectContainer = event.target.closest(".custom_select");
-      selectContainer.classList.remove("active");
+      moreBtn.classList.toggle("show-more--active");
+      textOverflow.classList.toggle("text-overflow--active");
+    },
+    handleDocumentClick(event) {
+      // Проверяем клик вне каталога для его закрытия
+      const catalogShow = this.$el.querySelector(".header__catalog-show");
+      const catalogHidden = this.$el.querySelector(".header__catalog-hidden");
+      const burger = this.$el.querySelector(".burger");
+
+      if (
+        catalogShow &&
+        catalogHidden &&
+        !catalogShow.contains(event.target) &&
+        !catalogHidden.contains(event.target) &&
+        (!burger || !burger.contains(event.target))
+      ) {
+        this.closeCatalog();
+        this.closeMobileCatalog();
+      }
     },
   },
 };
