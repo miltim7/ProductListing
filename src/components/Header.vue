@@ -2043,6 +2043,5 @@ export default {
 </script>
 
 <style>
-@import "/src/assets/header/libs.min.css";
-@import "/src/assets/header/style.min.css";
+@import "/src/assets/header.css";
 </style>

@@ -3,21 +3,21 @@
 <template>
   <div>
     <Header />
-    <ProductsTable />
+    <ProductsListing />
     <Footer />
   </div>
 </template>
 
 <script>
 import Header from './components/Header.vue'
-import ProductsTable from './components/ProductsTable.vue'
+import ProductsListing from './components/ProductsListing.vue'
 import Footer from './components/Footer.vue'
 
 export default {
   name: 'App',
   components: {
     Header,
-    ProductsTable,
+    ProductsListing,
     Footer
   }
 }

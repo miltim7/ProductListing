@@ -457,7 +457,7 @@
 
 <script>
 export default {
-  name: "ProductsTable",
+  name: "ProductsListing",
   data() {
     return {
       searchQuery: "",
@@ -743,3 +743,7 @@ export default {
   },
 };
 </script>
+
+<style>
+@import "/src/assets/product-listing.css";
+</style>
